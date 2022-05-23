@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin - Add Promotion</title>
+</head><!--/head-->
+<body>
+<div class="wrapper row-offcanvas row-offcanvas-left">
+    <div style="display: flex">
+        <div class="container" style="padding: 0; position: relative">
+            <div></div>
+            <div class="container">
+                <div class="row"
+                     style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; margin: 0 auto; padding: 20px;">
+                    <div class="col-sm-12" [hidden]="submitted">
+                        <h2 class="myclass">Add Promotion</h2>
+                        <form method="post" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
+                            <div class="form-group">
+                                <label>Promotion Name</label>
+                                <input type="text" class="form-control"
+                                       name="name" placeholder="Enter name" id="name" value="" required
+                                       [(ngModel)]="promotion.name">
+                            </div>
+                            <div class="form-group">
+                                <label>Start date</label>
+                                <input type="date" class="form-control"
+                                       name="startDate" placeholder="Enter Start date" id="startDate" value=""
+                                       [(ngModel)]="promotion.startDate">
+                            </div>
+                            <div class="form-group">
+                                <label>End date</label>
+                                <input type="date" class="form-control"
+                                       name="name" placeholder="Enter End date" id="endDate" value=""
+                                       [(ngModel)]="promotion.endDate">
+                            </div>
+                            <div class="form-group">
+                                <label>Discount (%)</label>
+                                <input type="text" class="form-control"
+                                       pattern="^[0-9]{1,3}$" title="Must enter from 0 to 100"
+                                       name="name" placeholder="Enter Discount" id="discount" value="" required
+                                       [(ngModel)]="promotion.discount">
+                            </div>
+                            <div class="form-group">
+                                <label>Max discount</label>
+                                <input type="text" class="form-control"
+                                       name="maxdiscount" placeholder="Enter maxdiscount" id="maxdiscount" value="" required
+                                       [(ngModel)]="promotion.maxdiscount">
+                            </div>
+                            <div class="form-group">
+                                <label>Remain Apply</label>
+                                <input type="text" class="form-control"
+                                       name="remainapply" placeholder="Enter remainapply" id="remainapply" value="" required
+                                       [(ngModel)]="promotion.remainapply">
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <input type="text" class="form-control"
+                                       name="status" placeholder="Enter Status" id="status" value="" required
+                                       [(ngModel)]="promotion.status">
+                            </div>
+                            <div class="form-group">
+                                <label>Code</label>
+                                <input type="text" class="form-control"
+                                       name="code" placeholder="Enter Code" id="code" value="" required
+                                       ([(ngModel)]="promotion.code")]>
+                            </div>
+                            <span style="color:red"></span>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a class="btn btn-primary" href="">Display List Promotion</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <form [formGroup]="form" (ngSubmit)="addpro()">
+
+    <label>Full Name</label>
+    <input type="text" formControlName="name" />
+    <input type="date" formControlName="startDate" />
+    <input type="date" formControlName="endDate" />
+    <input type="text" formControlName="applyDay" />
+    <input type="number" formControlName="discount" />
+    <input type="number" formControlName="remainapply" />
+
+    <button type="submit">
+      sumit
+    </button>
+
+</form> -->
+</body>
+</html>
+
