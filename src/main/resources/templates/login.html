@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <title>Login </title>
+    <th:block th:replace="layout_customer/head :: head"></th:block>
+
+
+</head><!--/head-->
+
+<body>
+<div th:include="layout_customer/navbar:: navbar"></div>
+
+<section id="form" style="margin-top: 50px;"><!--form-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-1"></div>
+            <div class="col-sm-4 col-sm-offset-1">
+                <div class="login-form"><!--login form-->
+                    <h2>Login to your account</h2>
+                    <form action="#" th:action="@{/doLogin}" method="post">
+                        <label>Username</label>
+                        <input type="text" placeholder="Your Username" name="username">
+                        <label>Password</label>
+                        <input type="password" placeholder="Password" name="password">
+                        <span class="left">
+                            <a th:href="@{/forgot_password}">Forgot password?</a>
+                        </span>
+                        <span class="right">
+                            <p style="color: red" th:text="${alert}"></p>
+                        </span>
+                        <button class="thm_btn" type="submit">Login Now</button>
+                        <div class="action ul_li">
+                            <span>Don’t have an account<a th:href="@{/process_register}">Sign up</a></span>
+                        </div>
+                    </form>
+                </div><!--/login form-->
+
+            </div>
+        </div>
+    </div>
+</section><!--/form-->
+
+
+
+<th:block th:replace="layout_customer/footer :: footer_customer"></th:block>
+<th:block th:replace="layout_customer/js :: js"></th:block>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Checkout</title>
+     <th:block th:replace="layout_customer/head :: head"></th:block>
+</head><!--/head-->
+<body>
+<div th:include="layout_customer/navbar:: navbar"></div>
+<section id="cart_items">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li class="active">Check out</li>
+            </ol>
+        </div><!--/breadcrums-->
+        <div class="shopper-informations" >
+            <div  >
+                <div class="clearfix" style="border: 1px solid rgba(0, 0, 0, 0.1); width: 50%; margin: 0 auto;
+                 border-radius: 15px; padding: 20px; box-shadow: 5px 3px 5px rgb(0 0 0 / 10%);">
+                    <div class="bill-to" style="width: 100%">
+                        <p style="font-weight: bold; color: orange; text-align: center">Receiver Information</p>
+                        <div class="form-one" style="width: 100%">
+                            <form th:action="@{/cart/saveOrder}" th:object="${order}" method="post">
+                                <label>Name</label>
+                                <input type="text" value="Nguyễn Viết Đạt" placeholder="Receiver Name" th:field="*{receiverName}" required>
+                                <label>Phone</label>
+                                <input type="text" placeholder="Phone" th:field="*{receiverPhone}" value="0376659296" required>
+                                <label>Address</label>
+                                <input type="text" placeholder="Address" th:field="*{receiverAddress}" value="18 phố viên, phường Đức Thắng, Bắc Từ Liêm, Hà Nội" required>
+                                <label>Payment Method </label>
+                                <select th:field="*{paymentMethod}" style="height: 40px">
+                                    <option value="0">Ship Cod</option>
+                                    <option value="1">Internet Banking</option>
+                                </select>
+                                <label style="margin-top: 10px">Shipping Unit</label>
+                                <select th:field="*{shippingUnit}" style="height: 40px">
+                                    <option th:each="shippingunit:${shippingUnitlist}"
+                                            th:value="${shippingunit.id}"
+                                            th:utext="${shippingunit.name}">
+                                </select>
+                                <input th:if="${promotion!=null}" type="hidden" name="promotionCode" th:value="${promotion.code}">
+                                <input th:if="${promotion==null}" type="hidden" name="promotionId" th:value="${0}">
+                                <input type="hidden" name="totalprice" th:value="${total}">
+                                <button type="submit" class="btn btn-default check_out" >Check out</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="review-payment">
+            <h2>Review & Payment</h2>
+        </div>
+
+        <div class="table-responsive cart_info">
+            <table class="table table-condensed">
+                <thead>
+                <tr class="cart_menu">
+                    <td class="image">Item</td>
+                    <td class="description">Name</td>
+                    <td class="price">Price</td>
+                    <td class="quantity">Quantity</td>
+                    <td class="total">Total</td>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:if="${listCart.size()>0}">
+                    <tr th:each="cart : ${listCart}">
+                        <td class="cart_product">
+                            <a href=""><img style="width: 100px;" th:src="${cart.product.image}"></a>
+                        </td>
+                        <td class="cart_description" style="width: 30%; padding-right: 5px;">
+                            <h4><a href="" th:text="${cart.product.name}"></a></h4>
+                        </td>
+                        <td class="cart_price">
+                            <p th:text="${cart.product.price}+' $'"></p>
+                        </td>
+                        <td class="cart_quantity">
+                            <h4 th:text="${cart.quantity}"></h4>
+                        </td>
+                        <td class="cart_total">
+                            <p class="cart_total_price" th:id="'total'+${cart.id}"
+                               th:text="${cart.product.price * cart.quantity}+' $'"></p>
+                        </td>
+                        <input type="hidden" th:id="'maxQuantity'+${cart.id}" th:value="${cart.product.quantity}">
+                    </tr>
+                    <tr>
+                        <td colspan="4">&nbsp;</td>
+                        <td colspan="2">
+                            <table class="table table-condensed total-result">
+                                <tr>
+                                    <td>Cart Sub Total</td>
+                                    <td><span th:text="${subtotal}"></span></td>
+                                </tr>
+                                <tr class="shipping-cost">
+                                    <td>Shipping Cost</td>
+                                    <td>Free</td>
+                                </tr>
+                                <tr class="shipping-cost">
+                                    <td>Promotion</td>
+                                    <td th:if="${promotion!=null}" th:text="${promotion.discount}+'%' +' ( max: ' + ${promotion.maxdiscount} +' $ )'"></td>
+                                    <td th:if="${promotion==null}">None </td>
+                                </tr>
+                                <tr>
+                                    <td>Total</td>
+                                    <td><span th:text="${total}"></span></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</section> <!--/#cart_items-->
+
+
+
+<th:block th:replace="layout_customer/footer :: footer_customer"></th:block>
+<th:block th:replace="layout_customer/js :: js"></th:block>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title> Orders Detail </title>
+    <th:block th:replace="layout_customer/head :: head"></th:block>
+
+
+<body>
+<div th:include="layout_customer/navbar:: navbar"></div>
+
+<section id="cart_items">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li class="active">My Orders</li>
+            </ol>
+        </div>
+        <div class="table-responsive cart_info">
+            <table class="table table-condensed">
+                <thead>
+                <tr class="cart_menu">
+                    <td class="Receiver Name" style="text-align: center">Receiver Name</td>
+                    <td class=" Phone" style="text-align: center">Phone</td>
+                    <td class="Address" style="text-align: center">Address</td>
+                    <td class="quantity" style="text-align: center">Date</td>
+                    <td class="quantity" style="text-align: center">Status</td>
+                    <td class="total" style="text-align: center">Total</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="cart_price" style="text-align: center">
+                        <p th:text="${order.receiverName}"></p>
+                    </td>
+                    <td class="cart_price" style="text-align: center">
+                        <p th:text="${order.receiverPhone}"></p>
+                    </td>
+                    <td class="cart_price" style="text-align: center">
+                        <p th:text="${order.receiverAddress}"></p>
+                    </td>
+                    <td class="cart_price" style="text-align: center">
+                        <p th:text="${#calendars.format(order.createdAt, 'dd/MM/yyyy')}"></p>
+                    </td>
+                    <td class="cart_price" style="text-align: center">
+                        <div th:switch="${order.status}">
+                            <p th:case="'0'">Processing</p>
+                            <p th:case="'1'">Shipping</p>
+                            <p th:case="'2'">Finished</p>
+                            <p th:case="'3'">Canceled</p>
+                        </div>
+                    </td>
+                    <td class="cart_price" style="text-align: center">
+                        <p th:text="${order.price.longValue()+' $'}"></p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <h3 style="text-align: center">Products in your order</h3>
+        <div class="table-responsive cart_info">
+            <table class="table table-condensed">
+                <thead>
+                <tr class="cart_menu">
+                    <td style="text-align: center" class="Receiver Name">Image</td>
+                    <td style="text-align: center" class=" Phone">Product Name</td>
+                    <td style="text-align: center" class="Address">Quantity</td>
+                    <td style="text-align: center" class="quantity">Price</td>
+                    <td style="text-align: center" class="total">Shipping Unit</td>
+                    <td style="text-align: center" class="total">Promotion</td>
+                    <td style="text-align: center" class="total">Payment Method</td>
+                    <td style="text-align: center" class="total">Total</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="orderdetails : ${orderdetail}">
+                    <td style="text-align: center" class="cart_price">
+                        <a th:href="@{'/product/productdetail/' + ${orderdetails.product.id}}">
+                            <img style="width: 50px;" th:src="${orderdetails.product.image}">
+                        </a>
+                    </td>
+                    <td style="text-align: center" class="cart_price">
+                        <a th:href="@{'/product/productdetail/'+${orderdetails.product.id}}">
+                            <p th:text="${orderdetails.product.name}"></p>
+                        </a>
+                    </td>
+                    <td style="text-align: center" class="cart_price">
+                        <p th:text="${orderdetails.quantity}"></p>
+                    </td>
+                    </td>
+                    <td style="text-align: center" class="cart_price">
+                        <p th:text="${orderdetails.price.longValue()+' $'}"></p>
+                    </td>
+                    <td style="text-align: center" class="cart_price">
+                        <p th:text="${orderdetails.order.shippingUnit.name}"></p>
+                    </td>
+                    <td style="text-align: center" class="cart_price">
+                        <p th:if="${orderdetails.order.promotion!=null}"
+                           th:text="${orderdetails.order.promotion.name + ' - ' + orderdetails.order.promotion.discount+'%'}"></p>
+                        <p th:if="${orderdetails.order.promotion==null}">None </p>
+                    </td>
+                    <td style="text-align: center" class="cart_price">
+                        <div th:switch="${orderdetails.order.paymentMethod}">
+                            <p th:case="'0'">Ship cod</p>
+                            <p th:case="'1'">Internet Banking</p>
+                        </div>
+                    </td>
+                    <td style="text-align: center" class="cart_price">
+                        <p th:if="${orderdetails.order.promotion!=null}"
+                           th:text="${(orderdetails.price.longValue() * orderdetails.quantity *(100 - orderdetails.order.promotion.discount)/100)+' $'}"></p>
+                        <p th:if="${orderdetails.order.promotion==null}"
+                           th:text="${(orderdetails.price.longValue() * orderdetails.quantity)+' $'}"></p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section> <!--/#cart_items-->
+
+
+<th:block th:replace="layout_customer/footer :: footer_customer"></th:block>
+<th:block th:replace="layout_customer/js :: js"></th:block>
+
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8">
+    <title>Home Page</title>
+    <th:block th:replace="layout_customer/head :: head"></th:block>
+</head>
+<body>
+<div th:include="layout_customer/navbar:: navbar"></div>
+<div class="container-fluid">
+    <section id="slider"><!--slider-->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#slider-carousel" data-slide-to="1"></li>
+                            <li data-target="#slider-carousel" data-slide-to="2"></li>
+                        </ol>
+
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <div class="col-sm-6">
+                                    <h1><span>FASHION</span></h1>
+                                    <h2>For All Condition</h2>
+                                    <p>Suitable for schools, offices, professional workspaces,...</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <img th:src="@{/images/home/fashion.jpg}" class="girl img-responsive" alt=""/>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-sm-6">
+                                    <h1><span>MODERN</span></h1>
+                                    <h2>Beyond The Times</h2>
+                                    <p>Always bring the newest designs to everyone.</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <img th:src="@{/images/home/modern.jpg}" class="girl img-responsive" alt=""/>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="col-sm-6">
+                                    <h1><span>STYLE</span></h1>
+                                    <h2>Make Personality Stand Out</h2>
+                                    <p>Highlight your style - Make confidence</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <img th:src="@{/images/home/style.jpg}" class="girl img-responsive" alt=""/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section><!--/slider-->
+</div>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="left-sidebar">
+                    <div class="categories" style="margin: 50px 0; padding: 15px">
+                        <h3>CATEGORIES</h3>
+                        <aside>
+                            <ul>
+                                <li>
+                                    <a th:href="@{'/product/listproducts/1?categoryId=-1&sortField='
+                                +'id'+'&sortDir='+ 'desc'+'&keyword= '}">All Product</a>
+                                </li>
+                                <li th:each="category:${listCategories}">
+                                    <a th:href="@{'/product/listproducts/1?categoryId='+${category.getId()}+'&sortField='
+                                +'id'+'&sortDir='+ 'desc'+'&keyword= '}">
+                                        <p th:text="${category.getName()}"> </p>
+                                        <p th:text="${category.products.size()}"></p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </aside>
+                    </div>
+                    <!--/category-products-->
+                    <div class="shipping text-center"><!--shipping-->
+                        <img th:src="@{/images/home/shipping.jpg}"/>
+                    </div><!--/shipping-->
+
+                </div>
+            </div>
+            <div class="col-sm-9 padding-right">
+                <div class="features_items">
+                    <h2 class="title text-center">Features Items</h2>
+                    <th:block th:each="product : ${listProducts}">
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img style="height: 100%" th:src="${product.image}"/>
+                                        <a th:href="@{'/product/productdetail/'+${product.id}}">
+                                            <h4 style="color: black; text-align: center; margin-left: 10%;
+                                            margin-right: 10%; white-space: nowrap; width: 80%; overflow: hidden; text-overflow: ellipsis;
+                                            font-size: 25px; font-weight: bold; font-family: 'FontAwesome';"
+                                                th:text="${product.name}"></h4></a>
+                                        <h2 th:text="${product.price.longValue()}+' $'"></h2>
+                                        <a sec:authorize="hasRole('CUSTOMER')"
+                                                th:href="@{'/cart/addtoCart/'+${product.id}}"
+                                           class="btn btn-default add-to-cart">
+                                            <i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        <a sec:authorize="!isAuthenticated()"
+                                           th:href="@{'/cart/addtoCart/'+${product.id}}"
+                                           class="btn btn-default add-to-cart">
+                                            <i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div><!--features_items-->
+
+            </div>
+            <div class="category-tab col-sm-12"><!--category-tab-->
+                <div class="col-sm-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tshirt" data-toggle="tab" th:text="${listCategories.get(0).name}"></a></li>
+                        <li><a href="#blazers" data-toggle="tab" th:text="${listCategories.get(1).name}"></a></li>
+                        <li><a href="#sunglass" data-toggle="tab" th:text="${listCategories.get(2).name}"></a></li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="tshirt">
+                        <th:block th:each="product : ${listProductsbyCategory1}">
+                            <div class="col-sm-3">
+                                <div class="product-image-wrapper">
+                                    <div class="single-products">
+                                        <div class="productinfo text-center">
+                                            <img th:src="${product.image}"/>
+                                            <a th:href="@{'/product/productdetail/'+${product.id}}">
+                                                <h4 style="color: black; text-align: center; margin-left: 10%; margin-right: 10%; white-space: nowrap; width: 80%; overflow: hidden; text-overflow: ellipsis;"
+                                                    th:text="${product.name}"></h4></a>
+                                            <h2 th:text="${product.price.longValue() + ' $'}"></h2>
+                                            <a sec:authorize="hasRole('CUSTOMER')"
+                                               th:href="@{'/cart/addtoCart/'+${product.id}}"
+                                               class="btn btn-default add-to-cart">
+                                                <i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                            <a sec:authorize="!isAuthenticated()"
+                                               th:href="@{'/cart/addtoCart/'+${product.id}}"
+                                               class="btn btn-default add-to-cart">
+                                                <i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                    <div class="tab-pane fade" id="blazers" >
+                        <th:block th:each="product : ${listProductsbyCategory2}">
+                            <div class="col-sm-3">
+                                <div class="product-image-wrapper">
+                                    <div class="single-products">
+                                        <div class="productinfo text-center">
+                                            <img th:src="${product.image}"/>
+                                            <h2 th:text="${product.price}"></h2>
+                                            <a th:href="@{'/product/productdetail/'+${product.id}}">
+                                                <h4 style="color: black; text-align: center; margin-left: 10%; margin-right: 10%; white-space: nowrap; width: 80%; overflow: hidden; text-overflow: ellipsis;"
+                                                    th:text="${product.name}"></h4></a>
+                                            <a sec:authorize="hasRole('CUSTOMER')"
+                                               th:href="@{'/cart/addtoCart/'+${product.id}}"
+                                               class="btn btn-default add-to-cart">
+                                                <i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                            <a sec:authorize="!isAuthenticated()"
+                                               th:href="@{'/cart/addtoCart/'+${product.id}}"
+                                               class="btn btn-default add-to-cart">
+                                                <i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                    <div class="tab-pane fade" id="sunglass" >
+                        <th:block th:each="product : ${listProductsbyCategory3}">
+                            <div class="col-sm-3">
+                                <div class="product-image-wrapper">
+                                    <div class="single-products">
+                                        <div class="productinfo text-center">
+                                            <img th:src="${product.image}"/>
+                                            <h2 th:text="${product.price}"></h2>
+                                            <a th:href="@{'/product/productdetail/'+${product.id}}">
+                                                <h4 style="color: black; text-align: center; margin-left: 10%; margin-right: 10%; white-space: nowrap; width: 80%; overflow: hidden; text-overflow: ellipsis;"
+                                                    th:text="${product.name}"></h4></a>
+                                            <a sec:authorize="hasRole('CUSTOMER')"
+                                               th:href="@{'/cart/addtoCart/'+${product.id}}"
+                                               class="btn btn-default add-to-cart">
+                                                <i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                            <a sec:authorize="!isAuthenticated()"
+                                               th:href="@{'/cart/addtoCart/'+${product.id}}"
+                                               class="btn btn-default add-to-cart">
+                                                <i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+            </div><!--/category-tab-->
+        </div>
+    </div>
+</section>
+
+<footer id="footer"><!--Footer-->
+
+    <div class="footer-widget">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="single-widget">
+                        <h2>Service</h2>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="">Online Help</a></li>
+                            <li><a href="">Contact Us</a></li>
+                            <li><a href="">Order Status</a></li>
+                            <li><a href="">Change Location</a></li>
+                            <li><a href="">FAQ’s</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="single-widget">
+                        <h2>Quock Shop</h2>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="">T-Shirt</a></li>
+                            <li><a href="">Mens</a></li>
+                            <li><a href="">Womens</a></li>
+                            <li><a href="">Gift Cards</a></li>
+                            <li><a href="">Shoes</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="single-widget">
+                        <h2>Policies</h2>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="">Terms of Use</a></li>
+                            <li><a href="">Privecy Policy</a></li>
+                            <li><a href="">Refund Policy</a></li>
+                            <li><a href="">Billing System</a></li>
+                            <li><a href="">Ticket System</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="single-widget">
+                        <h2>About Shop</h2>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="">Company Information</a></li>
+                            <li><a href="">Careers</a></li>
+                            <li><a href="">Store Location</a></li>
+                            <li><a href="">Affillate Program</a></li>
+                            <li><a href="">Copyright</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-sm-offset-1">
+                    <div class="single-widget">
+                        <h2>About Shop</h2>
+                        <form action="#" class="searchform">
+                            <input type="text" placeholder="Your email address" />
+                            <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+                            <p>Get the most recent updates from <br />our site and be updated your self...</p>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <p class="pull-left">Copyright © 2022 Đồ Án HUMG, overnight.</p>
+            </div>
+        </div>
+    </div>
+
+</footer><!--/Footer-->
+
+<script th:src="@{js/jquery.js}"></script>
+<script th:src="@{js/bootstrap.min.js}"></script>
+<script th:src="@{js/jquery.scrollUp.min.js}"></script>
+<script th:src="@{js/price-range.js}"></script>
+<script th:src="@{js/jquery.prettyPhoto.js}"></script>
+<script th:src="@{js/main.js}"></script>
+
+</body>
+</html>

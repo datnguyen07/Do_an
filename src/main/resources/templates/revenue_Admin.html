@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin - Revenue </title>
+    <th:block th:replace="layout_admin/meta_head :: meta_head"></th:block>
+</head>
+<body>
+<div class="wrapper row-offcanvas row-offcanvas-left">
+    <div style="display: flex">
+        <div th:include="layout_admin/nav_bar:: nav_bar"></div>
+        <div class="container" style="padding: 0; position: relative">
+            <div th:include="layout_admin/navi_bar:: navi_bar"></div>
+            <div class="container" >
+                <h1 style="font-family: cursive; color: orange;">Revenue</h1>
+                <form th:action="@{/admin/revenue}" method="post" class="row">
+                    <div class="col-2"></div>
+                    <select name="Year" th:object="${Year}" style="height: 38px;" class="col-6">
+                        <option th:value='2020' th:selected="${Year==2020}">2020</option>
+                        <option th:value='2021' th:selected="${Year==2021}">2021</option>
+                        <option th:value='2022' th:selected="${Year==2022}">2022</option>
+                    </select>
+                    <button style="vertical-align: unset" type="submit" class="btn btn-primary col-2">OK</button>
+                </form><br>
+                <div align="center" style="width: 100%;">
+                    <a src="https://www.facebook.com/"><div id="chart_div"></div></a>
+                </div>
+                <th:block th:replace="layout_admin/footer :: footer"></th:block>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="layout_admin/js_lib :: js_lib"></th:block>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        google.charts.load('current', {
+            packages : [ 'corechart', 'bar' ]
+        });
+        google.charts.setOnLoadCallback(drawColumnChart);
+    });
+    function drawColumnChart() {
+        var real_data = [[${chartData}]];
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Month');
+        data.addColumn('number', 'Money');
+        Object.keys(real_data).forEach(function(key) {
+            data.addRow([ key, real_data[key] ]);
+        });
+        var options = {
+            title : 'Revenue in ',
+            hAxis : {
+                title : 'Months',
+            },
+            vAxis : {
+                title : 'Total Revenues'
+            }
+        };
+        var chart = new google.visualization.ColumnChart(document
+            .getElementById('chart_div'));
+        chart.draw(data, options);
+        google.visualization.events.addListener(chart, 'select', function() {
+            var selectedMonth = data.getValue(chart.getSelection()[0].row, 0);
+            window.location.href='/admin/revenue/order/'+selectedMonth+'/'+[[${Year}]];
+        });
+    }
+</script>
+</body>
+</html>
+
