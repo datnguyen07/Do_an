@@ -205,10 +205,10 @@ public class UserController {
         String reNewPass = request.getParameter("re_newpass");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(curPass, user.getPassword())) {
-            model.addFlashAttribute("alert_currentPass", "Wrong password!");
+            model.addFlashAttribute("alert_currentPass", "Wrong current password!");
             return new RedirectView("/changePassword");
         } else if (curPass.equals(newPass) || newPass.length() < 6) {
-            model.addFlashAttribute("alert_newPass", "New password must different and has more than 6 characters!");
+            model.addFlashAttribute("alert_newPass", "New password must different and has more than 8 characters!");
             return new RedirectView("/changePassword");
         } else if (!newPass.equals(reNewPass)) {
             model.addFlashAttribute("alert_reNewPass", "Enter exactly new password again!");
